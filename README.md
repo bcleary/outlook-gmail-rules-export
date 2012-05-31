@@ -20,7 +20,7 @@
   * Settings -> Filters -> "Select All" -> "Export"
 * Import the rules as Gmail filters
   * Settings -> Filters click "Import Filters" and import `rules.xml`
-  * Importing existing filters into gmail is handled gracefully, no duplicate filters should be created, but its always a good idead to backup your filters
+  * Importing existing filters into gmail is handled gracefully, no duplicate filters should be created, but its always a good idea to backup your filters
 
 ##Credits##
 * Thanks to iloveitaly (Michael Bianco) https://github.com/iloveitaly for his work figuring out the various ways Outlook stores its rules https://github.com/iloveitaly/outlook-gmail-rules-migration 
