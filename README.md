@@ -8,7 +8,7 @@
 
 ##Usage##
 
-* Download the tool from https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe
+* Build it or bownload the binary from https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe
 * Run the tool from the command line;
   * OutlookRulesExport.exe example@example.com
   * This will create a `rules.xml` file in the current directory containing the rules
