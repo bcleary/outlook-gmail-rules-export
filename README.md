@@ -9,8 +9,8 @@ Usage
 
 * Download the tool from https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe
 * Run the tool from the command line;
-** OutlookRulesExport.exe example@example.com
-** This will create a rules.xml file in the current directory containing the rules
+*   OutlookRulesExport.exe example@example.com
+*   This will create a rules.xml file in the current directory containing the rules
 * Log into Gmail
 * Enable gmail filters import in gmail
 ** Setting -> Labs enable "Filter import/export" and click save changes
