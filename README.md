@@ -1,4 +1,4 @@
-##utlook-gmail-rules-export##
+##outlook-gmail-rules-export##
 
 * This is a command line tool to export email rules from Outlook into a file format that can be imported to Gmail. 
 * The tool currently only works for "From Address - Move to Folder" type rules, will add support for other types of rules as i need them.
