@@ -10,10 +10,10 @@ Usage
 * Download the tool from https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe
 * Run the tool from the command line;
   * OutlookRulesExport.exe example@example.com
-  * This will create a rules.xml file in the current directory containing the rules
+  * This will create a `rules.xml` file in the current directory containing the rules
 * Log into Gmail
-* Enable gmail filters import in gmail
+* Enable gmail filters import in Gmail
   * Setting -> Labs enable "Filter import/export" and click save changes
-* Add the gmail labs rules 
-  * Settings -> Filters click "Import Filters" and import `gmail_rules.xml`
+* Import the rules as Gmail filters 
+  * Settings -> Filters click "Import Filters" and import `rules.xml`
   * Importing existing filters into gmail is handled gracefully, no duplicate filters should be created but its always a good idead to backup your filters
