@@ -23,4 +23,5 @@
   * Importing existing filters into gmail is handled gracefully, no duplicate filters should be created, but its always a good idea to backup your filters
 
 ##Credits##
+* This is a rewrite of the https://github.com/iloveitaly/outlook-gmail-rules-migration project from ruby and vb to c#
 * Thanks to iloveitaly (Michael Bianco) https://github.com/iloveitaly for his work figuring out the various ways Outlook stores its rules https://github.com/iloveitaly/outlook-gmail-rules-migration 
