@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Outlook-gmail-rules-export : Tool to export email rules from Outlook to Gmail in XML, Text, CSV" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Outlook-gmail-rules-export</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/bcleary/outlook-gmail-rules-export">View on GitHub</a>
+
+          <h1 id="project_title">Outlook-gmail-rules-export</h1>
+          <h2 id="project_tagline">Tool to export email rules from Outlook to Gmail in XML, Text, CSV</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/bcleary/outlook-gmail-rules-export/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/bcleary/outlook-gmail-rules-export/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>outlook-gmail-rules-export</h2>
+
+<ul>
+<li>This is a command line tool to export email rules from Outlook into a file format that can be imported to Gmail. </li>
+<li>The tool currently only works for "From Address - Move to Folder" type rules, will add support for other types of rules as i need them.</li>
+<li>I have tested this on Win 7 64bit &amp; Outlook 2010 but it should work on 2007 also</li>
+<li>It also outputs rules in CSV to the command line so you can script it if you want</li>
+<li>Please report any bugs</li>
+</ul><h2>Usage</h2>
+
+<ul>
+<li>Build it or download the binary from <a href="https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe">https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe</a>
+</li>
+<li>Run the tool from the command line;
+
+<ul>
+<li>OutlookRulesExport.exe <a href="mailto:example@example.com">example@example.com</a>
+</li>
+<li>This will create a <code>rules.xml</code> file in the current directory containing the rules</li>
+<li>You might get a warning from outlook asking you to allow access, if so click ok.</li>
+</ul>
+</li>
+<li>Log into Gmail</li>
+<li>Enable gmail filters import in Gmail
+
+<ul>
+<li>Setting -&gt; Labs enable "Filter import/export" and click save changes</li>
+</ul>
+</li>
+<li>Backup your existing Gmail filters
+
+<ul>
+<li>Settings -&gt; Filters -&gt; "Select All" -&gt; "Export"</li>
+</ul>
+</li>
+<li>Import the rules as Gmail filters
+
+<ul>
+<li>Settings -&gt; Filters click "Import Filters" and import <code>rules.xml</code>
+</li>
+<li>Importing existing filters into gmail is handled gracefully, no duplicate filters should be created, but its always a good idea to backup your filters</li>
+</ul>
+</li>
+</ul><h2>Credits</h2>
+
+<ul>
+<li>This is a rewrite of the <a href="https://github.com/iloveitaly/outlook-gmail-rules-migration">https://github.com/iloveitaly/outlook-gmail-rules-migration</a> project from ruby and vb to c#</li>
+<li>Thanks to iloveitaly (Michael Bianco) <a href="https://github.com/iloveitaly">https://github.com/iloveitaly</a> for his work figuring out the various ways Outlook stores its rules <a href="https://github.com/iloveitaly/outlook-gmail-rules-migration">https://github.com/iloveitaly/outlook-gmail-rules-migration</a> </li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Outlook-gmail-rules-export maintained by <a href="https://github.com/bcleary">bcleary</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
