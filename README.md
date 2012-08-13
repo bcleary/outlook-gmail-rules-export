@@ -5,6 +5,7 @@
 * I have tested this on Win 7 64bit & Outlook 2010 but it should work on 2007 also
 * It also outputs rules in CSV to the command line so you can script it if you want
 * Please report any bugs
+* http://bcleary.github.com/outlook-gmail-rules-export/
 
 ##Usage##
 
