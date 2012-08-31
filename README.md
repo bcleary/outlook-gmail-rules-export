@@ -2,7 +2,8 @@
 
 * This is a command line tool to export email rules from Outlook into a file format that can be imported to Gmail. 
 * The tool currently only works for "From Address - Move to Folder" type rules, will add support for other types of rules as i need them.
-* I have tested this on Win 7 64bit & Outlook 2010 but it should work on 2007 also
+* Tested on Win 7 64bit & Outlook 2010 but it should work on 2007 also
+* Tested on Win 8 64bit & Outlook 15 Beta
 * It also outputs rules in CSV to the command line so you can script it if you want
 * Please report any bugs
 * http://bcleary.github.com/outlook-gmail-rules-export/
