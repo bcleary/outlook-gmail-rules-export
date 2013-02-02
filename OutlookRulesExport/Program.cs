@@ -146,33 +146,53 @@ namespace OutlookRulesExport
 
             foreach (Rule r in rules)
             {
-                string address = "";
-                string path ="";
 
                 // condition from email address & move to folder
+                // mupports multiple addresses in the from
                 if (r.Conditions.From.Recipients.Count > 0)
                 {
-                    // voodo to extract smtp email address from outlook
-                    try
-                    {
-                        OlAddressEntryUserType addressType = r.Conditions.From.Recipients[1].AddressEntry.AddressEntryUserType;
+                    string address = "";
+                    string path = "";
 
-                        if ((addressType == OlAddressEntryUserType.olExchangeRemoteUserAddressEntry) || (addressType == OlAddressEntryUserType.olExchangeUserAddressEntry))
+                    for (int i = 1; i <= r.Conditions.From.Recipients.Count; i++)
+                    {
+                        string temp = "";
+                        // voodo to extract email addresses
+                        try
                         {
-                            address = r.Conditions.From.Recipients[1].AddressEntry.GetExchangeUser().PrimarySmtpAddress;
-                        }
-                        else
-                        {
-                            if (addressType == OlAddressEntryUserType.olSmtpAddressEntry)
+                            OlAddressEntryUserType addressType = r.Conditions.From.Recipients[i].AddressEntry.AddressEntryUserType;
+
+                            if ((addressType == OlAddressEntryUserType.olExchangeRemoteUserAddressEntry) || (addressType == OlAddressEntryUserType.olExchangeUserAddressEntry))
                             {
-                                address = r.Conditions.From.Recipients[1].AddressEntry.Address;
+                                temp = r.Conditions.From.Recipients[i].AddressEntry.GetExchangeUser().PrimarySmtpAddress;
+                            }
+                            else
+                            {
+                                if (addressType == OlAddressEntryUserType.olSmtpAddressEntry)
+                                {
+                                    temp = r.Conditions.From.Recipients[i].AddressEntry.Address;
+                                }
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
+
+                        // compose the address string if there are mutlitple addresses in the from
+                        if (!String.IsNullOrEmpty(temp))
+                        {
+                            if (i == 1)
+                            {
+                                address += temp;
+                            }
+                            else
+                            {
+                                address += "," + temp;
                             }
                         }
                     }
-                    catch (System.Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
+
 
                     // capture the action
                     // TODO check if the rule is in a error state
