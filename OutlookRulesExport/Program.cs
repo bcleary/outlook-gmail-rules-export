@@ -41,7 +41,7 @@ namespace OutlookRulesExport
                     store = GetStore(storeName);
                     if (store != null)
                     {
-                        List<MyRule> rulesList = GetRules(store);
+                        List<MyRule> rulesList = GetRules(store, storeName);
                         PrintCSV(rulesList);
                     }
                 }
@@ -54,8 +54,7 @@ namespace OutlookRulesExport
             store = GetStore(storeName);
             if (store != null)
             {
-                List<MyRule> rulesList = GetRules(store);
-                CleanRuleActions(rulesList, storeName);
+                List<MyRule> rulesList = GetRules(store, storeName);
 
                 string fileName = "rules.xml";
                 PrintXML(rulesList, fileName);
@@ -139,80 +138,145 @@ namespace OutlookRulesExport
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static List<MyRule> GetRules(Store s)
+        public static List<MyRule> GetRules(Store s, string storeName)
         {
             Rules rules = s.GetRules();
             List<MyRule> rulesList = new List<MyRule>();
 
             foreach (Rule r in rules)
             {
-
-                // condition from email address & move to folder
-                // mupports multiple addresses in the from
-                if (r.Conditions.From.Recipients.Count > 0)
+                if (r.Enabled)
                 {
-                    string address = "";
-                    string path = "";
+                    MyRule mr = new MyRule();
 
-                    for (int i = 1; i <= r.Conditions.From.Recipients.Count; i++)
+                    ParseFromAddresses(r, mr);
+                    ParseLabelMove(r, mr, storeName);
+                    ParseLabelCopy(r, mr, storeName);
+                    ParseSubject(r, mr);
+                    ParseBody(r, mr);
+
+                    rulesList.Add(mr);
+                }
+            }
+
+            return rulesList;
+        }
+
+        private static void ParseBody(Rule r, MyRule mr)
+        {
+            if (r.Conditions.Body.Enabled)
+            {
+                string[] temp = r.Conditions.Body.Text;
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    mr.HasTheWord += temp[i];
+
+                    if (i != temp.Length - 1)
+                        mr.HasTheWord += " OR ";
+                }
+            }
+        }
+
+        private static void ParseSubject(Rule r, MyRule mr)
+        {
+            if (r.Conditions.Subject.Enabled)
+            {
+                string[] temp = r.Conditions.Subject.Text;
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    mr.Subject += temp[i];
+
+                    if (i != temp.Length - 1)
+                        mr.Subject += " OR ";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Parses a rule for MoveToFolder actions
+        /// Converts this to a GMail label also sets the ShouldArchive option on the 
+        /// gmail filter which applies the label makes the mail skip the gmail inbox
+        /// 
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="mr"></param>
+        private static void ParseLabelMove(Rule r, MyRule mr, string storeName)
+        {
+            try
+            {
+                if (r.Actions[1].ActionType == OlRuleActionType.olRuleActionMoveToFolder)
+                {
+                    if (r.Actions.MoveToFolder.Enabled)
                     {
-                        string temp = "";
-                        // voodo to extract email addresses
-                        try
+                        MAPIFolder folder = r.Actions.MoveToFolder.Folder;
+                        if (folder != null)
                         {
-                            OlAddressEntryUserType addressType = r.Conditions.From.Recipients[i].AddressEntry.AddressEntryUserType;
-
-                            if ((addressType == OlAddressEntryUserType.olExchangeRemoteUserAddressEntry) || (addressType == OlAddressEntryUserType.olExchangeUserAddressEntry))
-                            {
-                                temp = r.Conditions.From.Recipients[i].AddressEntry.GetExchangeUser().PrimarySmtpAddress;
-                            }
-                            else
-                            {
-                                if (addressType == OlAddressEntryUserType.olSmtpAddressEntry)
-                                {
-                                    temp = r.Conditions.From.Recipients[i].AddressEntry.Address;
-                                }
-                            }
-                        }
-                        catch (System.Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
-
-                        // compose the address string if there are mutlitple addresses in the from
-                        if (!String.IsNullOrEmpty(temp))
-                        {
-                            if (i == 1)
-                            {
-                                address += temp;
-                            }
-                            else
-                            {
-                                address += "," + temp;
-                            }
+                            mr.Label = CleanRuleActions(folder.FolderPath, storeName);
+                            mr.ShouldArchive = true;
                         }
                     }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
 
+        /// <summary>
+        /// Parses a rule for the CopyToFolder action
+        /// Converts the action of a GMail label but does not set the ShouldArchive option
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="mr"></param>
+        private static void ParseLabelCopy(Rule r, MyRule mr, string storeName)
+        {
+            try
+            {
+                if (r.Actions.CopyToFolder.Enabled)
+                {
+                    MAPIFolder folder = r.Actions.CopyToFolder.Folder;
+                    if (folder != null)
+                    {
+                        mr.Label = CleanRuleActions(folder.FolderPath, storeName);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
 
-                    // capture the action
-                    // TODO check if the rule is in a error state
+        /// <summary>
+        /// condition from email address & move to folder
+        /// mupports multiple addresses in the from
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="mr"></param>
+        private static void ParseFromAddresses(Rule r, MyRule mr)
+        {
+            if (r.Conditions.From.Recipients.Count > 0)
+            {
+                for (int i = 1; i <= r.Conditions.From.Recipients.Count; i++)
+                {
+                    string temp = "";
+                    // voodo to extract email addresses
                     try
                     {
-                        if (r.Actions[1].ActionType == OlRuleActionType.olRuleActionMoveToFolder)
+                        OlAddressEntryUserType addressType = r.Conditions.From.Recipients[i].AddressEntry.AddressEntryUserType;
+
+                        if ((addressType == OlAddressEntryUserType.olExchangeRemoteUserAddressEntry) || (addressType == OlAddressEntryUserType.olExchangeUserAddressEntry))
                         {
-                            if (r.Actions.MoveToFolder.Enabled)
+                            temp = r.Conditions.From.Recipients[i].AddressEntry.GetExchangeUser().PrimarySmtpAddress;
+                        }
+                        else
+                        {
+                            if (addressType == OlAddressEntryUserType.olSmtpAddressEntry)
                             {
-                                MAPIFolder folder = r.Actions.MoveToFolder.Folder;
-                                if (folder != null)
-                                {
-                                    path = folder.FolderPath;
-
-                                    MyRule myRule = new MyRule();
-                                    myRule.Address = address;
-                                    myRule.Action = path;
-
-                                    rulesList.Add(myRule);
-                                }
+                                temp = r.Conditions.From.Recipients[i].AddressEntry.Address;
                             }
                         }
                     }
@@ -220,10 +284,21 @@ namespace OutlookRulesExport
                     {
                         Console.WriteLine(ex);
                     }
+
+                    // compose the address string if there are mutlitple addresses in the from
+                    if (!String.IsNullOrEmpty(temp))
+                    {
+                        if (i == 1)
+                        {
+                            mr.FromAddress += temp;
+                        }
+                        else
+                        {
+                            mr.FromAddress += "," + temp;
+                        }
+                    }
                 }
             }
-
-            return rulesList;
         }
 
         /// <summary>
@@ -235,7 +310,7 @@ namespace OutlookRulesExport
             // print the rules
             foreach (MyRule mr in rules)
             {
-                Console.WriteLine(mr.Address + "," + mr.Action);
+                Console.WriteLine(mr.FromAddress + ";" + mr.Label);
             }
         }
 
@@ -245,16 +320,15 @@ namespace OutlookRulesExport
         /// </summary>
         /// <param name="rules"></param>
         /// <param name="storeName"></param>
-        public static void CleanRuleActions(List<MyRule> rules, String storeName)
+        public static string CleanRuleActions(string path, String storeName)
         {
-            foreach (MyRule r in rules)
-            {
-                // remove the store name from the action path
-                r.Action = r.Action.Replace("\\\\"+storeName+"\\", String.Empty);
+            // remove the store name from the action path
+            path =  path.Replace("\\\\"+storeName+"\\", String.Empty);
 
-                // swap backslash for forwardslash to play nice with google
-                r.Action = r.Action.Replace("\\", "/");
-            }
+            // swap backslash for forwardslash to play nice with google
+            path = path.Replace("\\", "/");
+
+            return path;
         }
 
         /// <summary>
@@ -274,35 +348,77 @@ namespace OutlookRulesExport
             foreach (MyRule r in rules)
             {
                 SyndicationItem atom = new SyndicationItem();
-                atom.Title = new TextSyndicationContent(r.Address, TextSyndicationContentKind.Plaintext);
+                atom.Title = new TextSyndicationContent(r.FromAddress, TextSyndicationContentKind.Plaintext);
                 atom.Categories.Add(new SyndicationCategory("filter"));
                 atom.Content = new TextSyndicationContent(String.Empty);
 
                 //atom.ElementExtensions.Add(new SyndicationElementExtension("property", googleNs, ""));
-
                 XName n = XName.Get("property", googleNs);
-                XElement el1a = new XElement(n);
-                XAttribute at1a = new XAttribute("name", "from");
-                el1a.Add(at1a);
-                XAttribute at1b = new XAttribute("value", r.Address);
-                el1a.Add(at1b);
-                atom.ElementExtensions.Add(el1a);
 
-                XElement el2a = new XElement(n);
-                XAttribute at2a = new XAttribute("name", "label");
-                el2a.Add(at2a);
-                XAttribute at2b = new XAttribute("value", r.Action);
-                el2a.Add(at2b);
-                atom.ElementExtensions.Add(el2a);
+                // conditions
+                bool conditionSet = false;
+                if (!String.IsNullOrEmpty(r.FromAddress))
+                {
+                    XElement el1a = new XElement(n);
+                    XAttribute at1a = new XAttribute("name", "from");
+                    el1a.Add(at1a);
+                    XAttribute at1b = new XAttribute("value", r.FromAddress);
+                    el1a.Add(at1b);
+                    atom.ElementExtensions.Add(el1a);
+                    
+                    conditionSet = true;
+                }
 
-                XElement el3a = new XElement(n);
-                XAttribute at3a = new XAttribute("name", "shouldArchive");
-                el3a.Add(at3a);
-                XAttribute at3b = new XAttribute("value", "true");
-                el3a.Add(at3b);
-                atom.ElementExtensions.Add(el3a);
+                if (!String.IsNullOrEmpty(r.Subject))
+                {
+                    XElement el4a = new XElement(n);
+                    XAttribute at4a = new XAttribute("name", "subject");
+                    el4a.Add(at4a);
+                    XAttribute at4b = new XAttribute("value", r.Subject);
+                    el4a.Add(at4b);
+                    atom.ElementExtensions.Add(el4a);
+                    
+                    conditionSet = true;
+                }
 
-                feedItems.Add(atom);
+                if (!String.IsNullOrEmpty(r.HasTheWord))
+                {
+                    XElement el4a = new XElement(n);
+                    XAttribute at4a = new XAttribute("name", "hasTheWord");
+                    el4a.Add(at4a);
+                    XAttribute at4b = new XAttribute("value", r.HasTheWord);
+                    el4a.Add(at4b);
+                    atom.ElementExtensions.Add(el4a);
+
+                    conditionSet = true;
+                }
+
+                // actions - only apply if a condition has been set
+                if (conditionSet)
+                {
+                    if (!String.IsNullOrEmpty(r.Label))
+                    {
+                        XElement el2a = new XElement(n);
+                        XAttribute at2a = new XAttribute("name", "label");
+                        el2a.Add(at2a);
+                        XAttribute at2b = new XAttribute("value", r.Label);
+                        el2a.Add(at2b);
+                        atom.ElementExtensions.Add(el2a);
+                    }
+
+                    if (r.ShouldArchive)
+                    {
+                        XElement el3a = new XElement(n);
+                        XAttribute at3a = new XAttribute("name", "shouldArchive");
+                        el3a.Add(at3a);
+                        XAttribute at3b = new XAttribute("value", r.ShouldArchive.ToString());
+                        el3a.Add(at3b);
+                        atom.ElementExtensions.Add(el3a);
+                    }
+
+
+                    feedItems.Add(atom);
+                }
             }
 
             feed.Items = feedItems;
@@ -325,19 +441,48 @@ namespace OutlookRulesExport
 
     class MyRule
     {
-        string address;
+        string toAddress;
+        string subject;
 
-        public string Address
+        public string Subject
         {
-            get { return address; }
-            set { address = value; }
+            get { return subject; }
+            set { subject = value; }
         }
-        string action;
 
-        public string Action
+        string hasTheWord;
+
+        public string HasTheWord
         {
-            get { return action; }
-            set { action = value; }
+            get { return hasTheWord; }
+            set { hasTheWord = value; }
+        }
+        string doesNotHaveTheWord;
+        string hasAttachment;
+        string shouldMarkAsRead;
+        bool shouldArchive;
+
+        public bool ShouldArchive
+        {
+            get { return shouldArchive; }
+            set { shouldArchive = value; }
+        }
+        string shouldStar;
+        string shouldTrash;
+        string shouldAlwaysMarkAsImportant;
+
+        string fromAddress;
+        public string FromAddress
+        {
+            get { return fromAddress; }
+            set { fromAddress = value; }
+        }
+
+        string label;
+        public string Label
+        {
+            get { return label; }
+            set { label = value; }
         }
     }
 }
