@@ -16,66 +16,68 @@
     <div class="wrapper">
       <header>
         <h1>Outlook-gmail-rules-export</h1>
-        <p>Tool to export email rules from Outlook to Gmail in XML, Text, CSV</p>
+        <p>Tool to export email rules from Outlook to Gmail</p>
 
         <p class="view"><a href="https://github.com/bcleary/outlook-gmail-rules-export">View the Project on GitHub <small>bcleary/outlook-gmail-rules-export</small></a></p>
 
 
         <ul>
-          <li><a href="https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe">Download <strong>EXE</strong></a></li>                  
+          <li><a href="https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.1/OutlookRulesExport.exe?raw=true">Download <strong>Stable</strong></a></li>  
+          <li><a href="https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.2/OutlookRulesExport.exe?raw=true">Download <strong>BETA</strong></a></li>
           <li><a href="https://github.com/bcleary/outlook-gmail-rules-export">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
-        <h2>outlook-gmail-rules-export</h2>
 
+<h2 id="outlook-rules-export-to-gmail">Outlook Rules Export To Gmail</h2>
 <ul>
-<li>This is a command line tool to export email rules from Outlook into a file format that can be imported to Gmail. </li>
-<li>The tool currently only works for "From Address - Move to Folder" type rules, will add support for other types of rules as i need them.</li>
-<li>I have tested this on Win 8 64bit &amp; Outlook 2013 but it should work on 2010 & 2007</li>
+<li>Simple tool to export rules from Outlook and import them into Google Gmail as filters</li>
+<li>Tested on Win7 64bit, Win8 64bit &amp; Outlook 2013, 2010 but it should work on 2007</li>
 <li>It also outputs rules in CSV to the command line so you can script it if you want</li>
-<li>Please report any bugs</li>
-</ul><h2>Usage</h2>
-
+</ul>
+<h2 id="download">Download</h2>
 <ul>
-<li>Build it or download the binary from <a href="https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe">https://github.com/downloads/bcleary/outlook-gmail-rules-export/OutlookRulesExport.exe</a>
-</li>
-<li>Run the tool from the command line;
-
+<li><a href="https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.1/OutlookRulesExport.exe?raw=true">0.0.1 - Stable version</a></li>
+<li><a href="https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.2/OutlookRulesExport.exe?raw=true">0.0.2 - Beta version</a></li>
+</ul>
+<h2 id="usage">Usage</h2>
 <ul>
-<li>OutlookRulesExport.exe <a href="mailto:example@example.com">example@example.com</a>
-</li>
+<li>Run the tool from the command line;<ul>
+<li>OutlookRulesExport.exe example@example.com</li>
 <li>This will create a <code>rules.xml</code> file in the current directory containing the rules</li>
 <li>You might get a warning from outlook asking you to allow access, if so click ok.</li>
 </ul>
 </li>
 <li>Log into Gmail</li>
-<li>Enable gmail filters import in Gmail
-
-<ul>
+<li>Enable gmail filters import in Gmail<ul>
 <li>Setting -&gt; Labs enable "Filter import/export" and click save changes</li>
 </ul>
 </li>
-<li>Backup your existing Gmail filters
-
-<ul>
+<li>Backup your existing Gmail filters<ul>
 <li>Settings -&gt; Filters -&gt; "Select All" -&gt; "Export"</li>
 </ul>
 </li>
-<li>Import the rules as Gmail filters
-
-<ul>
-<li>Settings -&gt; Filters click "Import Filters" and import <code>rules.xml</code>
-</li>
+<li>Import the rules as Gmail filters<ul>
+<li>Settings -&gt; Filters click "Import Filters" and import <code>rules.xml</code></li>
 <li>Importing existing filters into gmail is handled gracefully, no duplicate filters should be created, but its always a good idea to backup your filters</li>
 </ul>
 </li>
-</ul><h2>Credits</h2>
-
-<ul>
-<li>This is a rewrite of the <a href="https://github.com/iloveitaly/outlook-gmail-rules-migration">https://github.com/iloveitaly/outlook-gmail-rules-migration</a> project from ruby and vb to c#</li>
-<li>Thanks to iloveitaly (Michael Bianco) <a href="https://github.com/iloveitaly">https://github.com/iloveitaly</a> for his work figuring out the various ways Outlook stores its rules <a href="https://github.com/iloveitaly/outlook-gmail-rules-migration">https://github.com/iloveitaly/outlook-gmail-rules-migration</a> </li>
 </ul>
+<h2 id="supported-rule-types">Supported Rule Types</h2>
+<ul>
+<li>The tool currently only works for the following types of rules (will add support for other types of rules as i need them or as requested)<ul>
+<li>Condition: "From Address" Actions: "Move-To-Folder | Copy-To-Folder"</li>
+<li>Condition: "Subject Contains" Actions: "Move-To-Folder | Copy-To-Folder"</li>
+<li>Condition: "Body Contains" Actions: "Move-To-Folder | Copy-To-Folder"</li>
+</ul>
+</li>
+</ul>
+<h2 id="credits">Credits</h2>
+<ul>
+<li>This is a rewrite of the https://github.com/iloveitaly/outlook-gmail-rules-migration project from ruby and vb to c#</li>
+<li>Thanks to iloveitaly (Michael Bianco) https://github.com/iloveitaly for his work figuring out the various ways Outlook stores its rules https://github.com/iloveitaly/outlook-gmail-rules-migration </li>
+</ul>
+
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/bcleary">bcleary</a></p>
