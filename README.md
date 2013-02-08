@@ -5,7 +5,7 @@
 * http://bcleary.github.com/outlook-gmail-rules-export/
 
 ##Download##
-* [0.0.1 - Stable version]("https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.1/OutlookRulesExport.exe?raw=true" onclick=”var that=this;_gaq.push(['_trackEvent','Download','EXE',this.href]);setTimeout(function(){location.href=that.href;},200);return false;”)
+* [0.0.1 - Stable version](https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.1/OutlookRulesExport.exe?raw=true)
 * [0.0.2 - Beta version](https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.2/OutlookRulesExport.exe?raw=true)
 
 ##Usage##
