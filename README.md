@@ -5,8 +5,8 @@
 * http://bcleary.github.com/outlook-gmail-rules-export/
 
 ##Download##
-* [0.0.1 - Stable version - only supports from move-to-folder rules](https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.1/OutlookRulesExport.exe?raw=true)
-* [0.0.2 - Beta version - supports all rules listed below](https://github.com/bcleary/outlook-gmail-rules-export/blob/gh-pages/downloads/0.0.2/OutlookRulesExport.exe?raw=true)
+* [0.0.1 - Stable version - only supports from move-to-folder rules](http://bit.ly/W5OAZi)
+* [0.0.2 - Beta version - supports all rules listed below](http://bit.ly/11WLoo1)
 
 ##Usage##
 * Run the tool from the command line;
