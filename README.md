@@ -8,6 +8,10 @@
 * [0.0.1 - Stable version - only supports from move-to-folder rules](http://bit.ly/W5OAZi)
 * [0.0.2 - Beta version - supports all rules listed below](http://bit.ly/11WLoo1)
 
+##System Requirements##
+* Office 2010 or later
+* .Net 4.5
+
 ##Usage##
 * Run the tool from the command line;
      * OutlookRulesExport.exe example@example.com
