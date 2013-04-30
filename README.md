@@ -1,6 +1,6 @@
 ##Outlook Rules Export To Gmail##
 * Simple tool to export rules from Outlook and import them into Google Gmail as filters
-* Tested on Win7 64bit, Win8 64bit & Outlook 2013, 2010 but it should work on 2007
+* Tested on Win7 64bit, Win8 64bit & Outlook 2007 Pro, 2010 and 2013
 * It also outputs rules in CSV to the command line so you can script it if you want
 * http://bcleary.github.com/outlook-gmail-rules-export/
 
@@ -9,8 +9,8 @@
 * [0.0.2 - Beta version - supports all rules listed below](http://bit.ly/11WLoo1)
 
 ##System Requirements##
-* Office 2010 or later
-* .Net 4.5
+* Office 2007 or later
+* .Net 4.5 http://www.microsoft.com/en-ca/download/details.aspx?id=30653
 
 ##Usage##
 * Run the tool from the command line;
