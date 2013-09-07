@@ -5,8 +5,9 @@
 * http://bcleary.github.com/outlook-gmail-rules-export/
 
 ##Download##
-* [0.0.1 - Stable version - only supports from move-to-folder rules](http://bit.ly/W5OAZi)
-* [0.0.2 - Beta version - supports all rules listed below](http://bit.ly/11WLoo1)
+
+* [0.0.2 - supports all rules listed below](http://bit.ly/11WLoo1) (Stable version)
+* [0.0.1 - only supports from move-to-folder rules](http://bit.ly/W5OAZi)
 
 ##System Requirements##
 * Office 2007 or later
